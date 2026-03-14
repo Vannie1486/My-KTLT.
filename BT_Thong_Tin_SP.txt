@@ -1,0 +1,185 @@
+#include <stdio.h>
+#include <string.h>
+typedef struct {
+	int ngay, thang, nam;
+}Date;
+typedef struct {
+	char msp[10];
+	int sl;
+	char ten[30];
+	float gia;
+	Date ngaynhap;
+}SanPham;
+void NhapThongTin(SanPham *sp);
+void InThongTin(SanPham sp, int i);
+int main() {
+	SanPham csp[100];
+	int n=0;
+	while (1)
+	{
+		int luaChon;
+		printf("\nChon cac chuc nang tiep theo de thuc hien: ");
+		printf("\n1.Nhap danh sach san pham.\n2.In danh sach.\n3.sap xep theo don gia.\n4.Tim san pham.\n5.Sua doi thong tin san pham.\n6.Thong ke san pham.\n7.Ket thuc chuong trinh.");
+		printf("\nLua chon cua ban: ");
+		scanf("%d", &luaChon);
+		printf("\n----------------------------------------------------------------");
+		if (luaChon == 1)
+		{
+			printf("\nNhap so luong san pham can cap nhat: ");
+			scanf("%d", &n);
+			fflush(stdin);
+			for (int i = 0; i < n; i++)
+			{
+				printf("\nNhap thong tin san pham thu %d: ", i+1);
+				NhapThongTin(&csp[i]);
+			}
+		}
+		else if (luaChon == 2)
+		{
+			for (int i = 0; i < n; i++)
+			{
+				InThongTin(csp[i], i);
+			}
+		}
+		else if (luaChon == 3)
+		{
+			SanPham dem;
+			for (int i = 0; i < n - 1; i++)
+			{
+				for (int j = i+1; j<n; j++)
+				{
+					if ((csp[i].gia) > csp[j].gia)
+					{
+						dem = csp[i];
+						csp[i] = csp[j];
+						csp[j] = dem;
+					}
+				}	
+			}
+		}
+		else if (luaChon == 4)
+		{
+			char tim[50];
+			int chon;
+			int timthay=0;
+			printf("\nLua chon cach thuc tim kiem:\n1.Tim theo ma san pham.\n2.Tim theo ten san pham.\nLua chon cua ban: ");
+			scanf("%d", &chon);
+			fflush(stdin);
+			if (chon == 1) 
+			{
+				printf("\nNhap ma san pham cua san pham ban can tim: ");
+				scanf("%s", &tim);
+				fflush(stdin);
+				for (int i =0; i<n; i++)
+				{
+					if (strcmp(csp[i].msp, tim) == 0)
+					{
+						printf("\nDa tim duoc san pham!");
+						printf("\nSan pham can tim o vi tri thu %d.", i);
+						printf("\n------------------------");
+						timthay=1;
+					}
+				}
+			}
+			else if (chon == 2)
+			{
+				printf("\nNhap ten san pham ban can tim: ");
+				scanf("%s", &tim);
+				fflush(stdin);
+				for (int i =0; i<n; i++)
+				{
+					if (strcmp(csp[i].ten, tim) == 0)
+					{
+						printf("\nDa tim duoc san pham!");
+						printf("\nSan pham can tim o vi tri thu %d.", i);
+						printf("\n------------------------");
+						timthay=1;
+					}
+				}
+			}
+			if (timthay==0)
+				{
+					printf("\nKhong tim thay san pham!!");
+					printf("\n------------------------");
+				}
+		}
+		else if (luaChon == 5)
+		{
+			char tim2[50];
+			int muc;
+			printf("\nNhap ma san pham cua san pham ban can sua doi: ");
+			scanf("%s", &tim2);
+			fflush(stdin);
+			for (int i = 0; i<n; i++)
+			{
+				if (strcmp(csp[i].msp, tim2) == 0)
+				{
+					printf("\nChinh sua thong tin san pham thu %d", tim2);
+					printf("\nChon muc ban can sua doi:\n1. Ma san pham.\n2. Ten san pham.\n3. So luong.\n4. Don gia.\nLua chon cua ban: ");
+					scanf("%d", &muc);
+					fflush(stdin);
+					printf("\nThong tin sua doi ban nhap: ");
+					if (muc == 1)
+					{
+						scanf("%s", &csp[i].msp);
+						break;
+					}
+					else if(muc == 2)
+					{
+						scanf("%s", &csp[i].ten);
+						break;
+					}
+					else if(muc == 3)
+					{
+						scanf("%d", &csp[i].sl);
+						break;
+					}
+					else if(muc == 4)
+					{
+						scanf("%f", &csp[i].gia);
+						break;
+					}
+				}
+			}
+		}
+		else if (luaChon == 6)
+		{
+			float tong = 0;
+			printf("\nThong ke tat ca san pham: ");
+			for (int i = 0; i < n; i++)
+			{
+				printf("\nTen san pham: %s\tSo luong: %d\tDon gia: %0.1f\tTong don gia san pham: %0.1f", csp[i].ten, csp[i].sl, csp[i].gia, csp[i].gia*csp[i].sl);
+				tong += csp[i].gia*csp[i].sl;
+			}
+			printf("\nTong gia tien tat ca san pham: %0.1f", tong);
+		}
+        else if (luaChon == 7) break;
+	}
+}
+void NhapThongTin(SanPham *sp) { 
+	printf("\nNhap ma san pham: ");
+	scanf("%s", &sp->msp);
+	fflush(stdin);
+	printf("\nNhap ten san pham: ");
+	scanf("%s", &sp->ten);
+	fflush(stdin);
+	printf("\nNhap so luong san pham: ");
+	scanf("%d", &sp->sl);
+	fflush(stdin);
+	printf("\nNhap gia cua san pham: ");
+	scanf("%f", &sp->gia);
+	fflush(stdin);
+	printf("\nNhap ngay cap nhat cua san pham: ");
+	scanf("%d %d %d", &sp->ngaynhap.ngay, &sp->ngaynhap.thang, &sp->ngaynhap.nam);
+	fflush(stdin);
+	printf("\n----------------------------------------------------------------");
+}
+void InThongTin(SanPham sp, int i) {
+	printf("\nThong tin san pham thu %d: ", i+1);
+	printf("\nMa san pham: %s", sp.msp);
+	printf("\nTen san pham: %s", sp.ten);
+	printf("\nSo luong san pham dang co: %d", sp.sl);
+	printf("\nGia cua san pham: %0.1f", sp.gia);
+	printf("\nNgay san pham duoc cap nhat: %d/%d/%d", sp.ngaynhap.ngay, sp.ngaynhap.thang, sp.ngaynhap.nam);
+	printf("\n------------------------");
+}
